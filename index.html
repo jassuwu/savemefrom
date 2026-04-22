@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>save me from</title>
+    <meta name="description" content="you'll see." />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://savefrom.jass.gg/" />
+    <meta property="og:title" content="save me from" />
+    <meta property="og:description" content="you'll see." />
+    <meta property="og:image" content="https://savefrom.jass.gg/og.png" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="save me from" />
+    <meta name="twitter:description" content="you'll see." />
+    <meta name="twitter:image" content="https://savefrom.jass.gg/og.png" />
+  </head>
+  <body>
+    <div id="root"></div>
+    <!-- Chroma-key filter applied to the Vergil video: isolates the green
+         channel, remaps it to the alpha channel, then sharpens the ramp so
+         mid-green pixels around slash edges go to alpha=0 cleanly. -->
+    <svg
+      width="0"
+      height="0"
+      style="position: absolute; pointer-events: none"
+      aria-hidden="true"
+    >
+      <defs>
+        <filter id="chroma-green" color-interpolation-filters="sRGB">
+          <!-- Alpha row = r - 2*g + b + 1 puts any green-dominant pixel
+               (including H.264's compressed 0-235 green) well below zero,
+               while non-green pixels stay at or above 1. feFuncA sharpens
+               the ramp so the slash edges chroma-key cleanly. -->
+          <feColorMatrix
+            type="matrix"
+            values="1 0 0 0 0
+                    0 1 0 0 0
+                    0 0 1 0 0
+                    1 -2 1 0 1"
+          />
+          <feComponentTransfer>
+            <feFuncA type="linear" slope="3" intercept="-0.5" />
+          </feComponentTransfer>
+        </filter>
+      </defs>
+    </svg>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

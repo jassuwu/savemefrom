@@ -1,0 +1,253 @@
+:root {
+  color-scheme: dark;
+  --bg: #05060a;
+  --accent: #ffffff;
+  --muted: #8b8fa3;
+}
+
+html,
+body,
+#root,
+.app {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: var(--bg);
+  color: var(--accent);
+  font-family: 'Inter', system-ui, -apple-system, Segoe UI, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.app {
+  position: fixed;
+  inset: 0;
+  cursor: default;
+}
+
+.app.state-ready {
+  cursor: crosshair;
+}
+
+.canvas-stage {
+  position: fixed;
+  inset: 0;
+  z-index: 10;
+  pointer-events: none;
+  overflow: hidden;
+  background: var(--bg);
+}
+
+.page-image {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 2;
+  pointer-events: none;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+.video-element {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  pointer-events: none;
+  z-index: 3;
+  opacity: 0;
+  /* Chroma-key the Vergil clip's greenscreen so the underlying image shows
+     through the green phase. The video's baked-in slashes (black lines on
+     green) stay opaque, so they land as cuts on the image. */
+  filter: url('#chroma-green');
+}
+
+.video-element.playing {
+  opacity: 1;
+}
+
+/* -------------------- idle hint -------------------- */
+
+.idle-hint {
+  position: fixed;
+  left: 50%;
+  bottom: 36px;
+  transform: translateX(-50%);
+  z-index: 25;
+  font-size: 11px;
+  letter-spacing: 0.35em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.22);
+  pointer-events: none;
+  user-select: none;
+  animation: hint-fade 2.8s ease-in-out infinite;
+}
+
+.idle-hint.loading {
+  animation: hint-pulse 1.1s ease-in-out infinite;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+@keyframes hint-fade {
+  0%,
+  100% {
+    opacity: 0.4;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+@keyframes hint-pulse {
+  0%,
+  100% {
+    opacity: 0.55;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+/* -------------------- corner controls (post-video) -------------------- */
+
+.corner-controls {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 50;
+  display: flex;
+  gap: 8px;
+  opacity: 0;
+  transform: translateY(-8px);
+  transition: opacity 320ms ease, transform 320ms ease;
+  pointer-events: none;
+}
+
+.corner-controls.visible {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+.corner-btn {
+  min-width: 36px;
+  height: 36px;
+  padding: 0 12px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: rgba(5, 6, 10, 0.55);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  color: rgba(255, 255, 255, 0.72);
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: lowercase;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: background 160ms ease, color 160ms ease,
+    border-color 160ms ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.corner-btn:hover:not(:disabled) {
+  background: rgba(255, 255, 255, 0.08);
+  color: #fff;
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+.corner-btn:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
+/* -------------------- drop overlay -------------------- */
+
+.drop-overlay {
+  position: fixed;
+  inset: 16px;
+  z-index: 60;
+  background: rgba(5, 6, 10, 0.4);
+  backdrop-filter: blur(6px);
+  border: 1px dashed rgba(255, 255, 255, 0.3);
+  border-radius: 4px;
+  pointer-events: none;
+}
+
+/* -------------------- credit -------------------- */
+
+.credit {
+  position: fixed;
+  left: 20px;
+  bottom: 20px;
+  z-index: 55;
+  font-size: 11px;
+  letter-spacing: 0.22em;
+  text-transform: lowercase;
+  color: rgba(255, 255, 255, 0.35);
+  text-decoration: none;
+  pointer-events: auto;
+  transition: color 180ms ease, opacity 320ms ease,
+    transform 180ms ease;
+  font-weight: 500;
+  mix-blend-mode: difference;
+}
+
+.credit::before {
+  content: '⚔';
+  margin-right: 8px;
+  letter-spacing: 0;
+  opacity: 0.7;
+}
+
+.credit:hover {
+  color: #fff;
+  transform: translateY(-1px);
+}
+
+/* Fade the credit during the slash so it doesn't distract from the cut. */
+.app.state-slashing .credit {
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* -------------------- error toast -------------------- */
+
+.error-toast {
+  position: fixed;
+  top: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 42;
+  padding: 10px 16px;
+  background: rgba(90, 20, 30, 0.85);
+  color: white;
+  border: 1px solid rgba(255, 90, 110, 0.4);
+  border-radius: 4px;
+  font-size: 12px;
+  letter-spacing: 0.06em;
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  backdrop-filter: blur(12px);
+}
+
+.error-toast button {
+  background: white;
+  color: #7a1020;
+  border: 0;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-weight: 600;
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  cursor: pointer;
+}

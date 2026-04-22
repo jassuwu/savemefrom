@@ -1,0 +1,57 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0a0618"/>
+      <stop offset="55%" stop-color="#05060a"/>
+      <stop offset="100%" stop-color="#0d0422"/>
+    </linearGradient>
+    <linearGradient id="blade" x1="0%" y1="100%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#7b5cff"/>
+      <stop offset="45%" stop-color="#e4dcff"/>
+      <stop offset="100%" stop-color="#ffffff"/>
+    </linearGradient>
+    <linearGradient id="type" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#ffffff"/>
+      <stop offset="55%" stop-color="#e4dcff"/>
+      <stop offset="100%" stop-color="#8b6ecf"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="50%" cy="55%" r="60%">
+      <stop offset="0%" stop-color="rgba(123,92,255,0.22)"/>
+      <stop offset="100%" stop-color="rgba(5,6,10,0)"/>
+    </radialGradient>
+    <filter id="softglow" x="-10%" y="-10%" width="120%" height="120%">
+      <feGaussianBlur stdDeviation="3"/>
+    </filter>
+  </defs>
+
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  <rect width="1200" height="630" fill="url(#glow)"/>
+
+  <g opacity="0.7" filter="url(#softglow)">
+    <line x1="120" y1="560" x2="1080" y2="70" stroke="url(#blade)" stroke-width="10" stroke-linecap="round"/>
+  </g>
+  <line x1="120" y1="560" x2="1080" y2="70" stroke="url(#blade)" stroke-width="4" stroke-linecap="round"/>
+
+  <text
+    x="600"
+    y="355"
+    font-family="Georgia, 'Times New Roman', serif"
+    font-size="128"
+    font-weight="900"
+    text-anchor="middle"
+    fill="url(#type)"
+    letter-spacing="8"
+    style="text-transform: uppercase;"
+  >SAVE ME FROM</text>
+
+  <text
+    x="600"
+    y="585"
+    font-family="system-ui, -apple-system, sans-serif"
+    font-size="20"
+    text-anchor="middle"
+    fill="rgba(181,165,255,0.65)"
+    letter-spacing="10"
+    style="text-transform: lowercase;"
+  >savefrom.jass.gg</text>
+</svg>
